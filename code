@@ -1,0 +1,64 @@
+package com.fitpeo.assignment;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+
+public class Assignment_Test {
+
+	public static void main(String[] args) {
+		
+		System.setProperty("WebDriver.chrome.driver"," F:\\Driver\\chromedriver-win64\\chromedriver-win64\\chromediver.exe");
+		WebDriver driver= new ChromeDriver();
+		
+		//Open the web browser and navigate to FitPeo Homepage.
+		driver.get("https://www.fitpeo.com/");
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		
+		//From the homepage, navigate to the Revenue Calculator Page.
+		WebElement Revenue_calculator = driver.findElement(By.xpath("//a//div[text()='Revenue Calculator']"));
+		Revenue_calculator.click();
+		
+		//Scroll down the page until the revenue calculator slider is visible.(Adjust the Slider:817 (for 820 no such element exception))
+		WebElement slider = driver.findElement(By.xpath("//span[@class='MuiSlider-thumb MuiSlider-thumbSizeMedium MuiSlider-thumbColorPrimary MuiSlider-thumb MuiSlider-thumbSizeMedium MuiSlider-thumbColorPrimary css-sy3s50']"));
+		//Adjust the Slider:823 (for 820 no such element exception)
+		Actions action = new Actions(driver);
+
+		action.scrollToElement(slider);
+		action.dragAndDropBy(slider,94,0 );
+		action.perform();
+		
+		
+		//Scroll down further and select the checkboxes for CPT-99091, CPT-99453, CPT-99454, and CPT-99474.
+		WebElement checkbox1=driver.findElement(By.xpath("//span[text()='57']"));
+		checkbox1.click();
+		action.scrollToElement(checkbox1);
+		WebElement checkbox2=driver.findElement(By.xpath("//span[text()='19.19']"));
+		checkbox2.click();
+		
+		WebElement checkbox3=driver.findElement(By.xpath("//span[text()='63']"));
+		checkbox3.click();
+		
+		WebElement checkbox4=driver.findElement(By.xpath("//span[text()='15']"));
+		checkbox4.click();
+		
+
+		//Validate 
+		WebElement total = driver.findElement(By.xpath("(//p[@class='MuiTypography-root MuiTypography-body1 inter css-hocx5c'])[4]"));
+		
+		//Verify that the header displaying Total Recurring Reimbursement for all Patients Per Month: shows the value $111105.	
+		System.out.println("Total Recurring Reimbursement for all Patients Per Month:"+total.getText());
+		
+
+		
+		driver.quit();
+		}
+
+}
